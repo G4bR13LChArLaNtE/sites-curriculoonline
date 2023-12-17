@@ -1,13 +1,12 @@
 {
     "build": {
-      "src": "app/app_sqlite.py",
+      "src": "./app_sqlite.py",
       "use": "@vercel/python"
     },
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "app/app_sqlite.py"
+        "dest": "./app_sqlite.py"
       }
     ]
   }
-  
