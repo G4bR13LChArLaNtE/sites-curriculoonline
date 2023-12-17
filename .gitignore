@@ -5,4 +5,4 @@ tabela1.html
 curriculo
 app.py
 mensagens.db
-.vercel
+psycopg2
