@@ -3,6 +3,5 @@ ds.py
 tabela1.css
 tabela1.html
 curriculo
-app.py
+app_sqlite.py
 mensagens.db
-psycopg2
