@@ -30,7 +30,7 @@ pessoa = {}
 # Banco de dados:
 
 def conectar_db():
-    con = psycopg2.connect(host='localhost', database='curriculo_charlante', user='charlante', password=password_sql)
+    con = psycopg2.connect(host='dpg-cmjc4tta73kc73cp9mt0-a.oregon-postgres.render.com', database='curriculo_charlante', user='charlante', password=password_sql)
     return con
 
 Base = declarative_base(conectar_db())
