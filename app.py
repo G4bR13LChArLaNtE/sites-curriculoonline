@@ -23,7 +23,7 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('APP_KEY')
 user = os.environ.get('usuario')
 password = os.environ.get('senha')
-password_sql = os.environ.get('postgres')
+password_sql = os.environ.get('password_sql')
 
 pessoa = {}
 
