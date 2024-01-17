@@ -33,7 +33,7 @@ def conectar_db():
     con = psycopg2.connect(host='dpg-cmjc4tta73kc73cp9mt0-a.oregon-postgres.render.com', database='mensagens_ri14', user='charlante', password=password_sql)
     return con
 
-Base = declarative_base(conectar_db())
+Base = declarative_base()
 
 
 def criar_tb(sql):
