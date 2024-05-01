@@ -30,7 +30,7 @@ pessoa = {}
 # Banco de dados:
 
 def conectar_db():
-    con = psycopg2.connect(host='roundhouse.proxy.rlwy.net', database='railway', user=user, password=password_sql)
+    con = psycopg2.connect(host='roundhouse.proxy.rlwy.net', database='railway', user=user, password=password_sql, port='48208')
     return con
 
 Base = declarative_base()
