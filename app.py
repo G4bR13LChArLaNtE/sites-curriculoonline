@@ -24,6 +24,8 @@ from dotenv import load_dotenv
 
 from waitress import serve
 
+from sqlalchemy import create_engine
+
 # Carrega as variáveis de ambiente do arquivo .env
 load_dotenv()
 
@@ -55,24 +57,24 @@ def conectar_db():
 Base = declarative_base()
 
 
-def criar_tb(sql):
-    con = conectar_db()
-    cur = con.cursor()
-    cur.execute(sql)
-    con.commit()
-    con.close()
+# def criar_tb(sql):
+#     con = conectar_db()
+#     cur = con.cursor()
+#     cur.execute(sql)
+#     con.commit()
+#     con.close()
 
 
-sql = """CREATE TABLE IF NOT EXISTS MSG (
-        ID SERIAL NOT NULL,
-        NOME VARCHAR(255) NOT NULL,
-        END_EMAIL VARCHAR(255) NOT NULL,
-        ASSUNTO VARCHAR(255) NOT NULL,
-        MENSAGEM VARCHAR(500) NOT NULL,
-        DT DATE NOT NULL,
-        CONSTRAINT ID_KEY PRIMARY KEY(ID));
-        
-        """
+# sql = """CREATE TABLE IF NOT EXISTS MSG (
+#         ID SERIAL NOT NULL,
+#         NOME VARCHAR(255) NOT NULL,
+#         END_EMAIL VARCHAR(255) NOT NULL,
+#         ASSUNTO VARCHAR(255) NOT NULL,
+#         MENSAGEM VARCHAR(500) NOT NULL,
+#         DT DATE NOT NULL,
+#         CONSTRAINT ID_KEY PRIMARY KEY(ID));
+
+#         """
 
 
 class Msg(Base):
@@ -92,7 +94,11 @@ class Msg(Base):
         self.dt = dt
 
 
-criar_tb(sql)
+# criar_tb(sql)
+
+DATABASE_URL = f"postgresql://{user_sql}:{password_sql}@{host_sql}:5432/neondb"
+engine = create_engine(DATABASE_URL)
+Base.metadata.create_all(engine)
 
 
 def inserir_db(sql):
@@ -265,7 +271,4 @@ def erro():
 # Rodando o aplicativo:
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 9090))
-    from app import app
-
-    serve(app, host="0.0.0.0", port=port)
+    serve(app, host="0.0.0.0")
