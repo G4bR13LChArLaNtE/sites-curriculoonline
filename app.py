@@ -10,7 +10,7 @@ from flask import (
 )
 
 from sqlalchemy import Column, Integer, String, Text, DateTime, func
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.orm import Session as sql_session
 
 import psycopg2
@@ -38,23 +38,33 @@ user_sql = os.environ.get("POSTGRES_USER")
 password_sql = os.environ.get("POSTGRES_PASSWORD")
 host_sql = os.environ.get("POSTGRES_HOST")
 
+
+DATABASE_URL = f"postgresql://{user_sql}:{password_sql}@{host_sql}:5432/neondb"
+engine = create_engine(DATABASE_URL)
+
+
 pessoa = {}
 
 # Banco de dados:
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 def conectar_db():
-    con = psycopg2.connect(
-        host=host_sql,
-        database="neondb",
-        user=user_sql,
-        password=password_sql,
-        port="5432",
-    )
-    return con
+    return SessionLocal()
 
 
 Base = declarative_base()
+
+
+# def conectar_db():
+#     con = psycopg2.connect(
+#         host=host_sql,
+#         database="neondb",
+#         user=user_sql,
+#         password=password_sql,
+#         port="5432",
+#     )
+#     return con
 
 
 # def criar_tb(sql):
@@ -96,8 +106,6 @@ class Msg(Base):
 
 # criar_tb(sql)
 
-DATABASE_URL = f"postgresql://{user_sql}:{password_sql}@{host_sql}:5432/neondb"
-engine = create_engine(DATABASE_URL)
 Base.metadata.create_all(engine)
 
 
@@ -272,3 +280,4 @@ def erro():
 
 if __name__ == "__main__":
     serve(app, host="0.0.0.0")
+    # app.run(host="localhost", port=9000, debug=True)
