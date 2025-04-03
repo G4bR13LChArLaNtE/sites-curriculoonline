@@ -1,6 +1,13 @@
 # Arquivo adivindo de modificações para transformar uma aplicação sqlite em postgresql.
 
-from flask import Flask, render_template, request, redirect, jsonify, session as flask_session
+from flask import (
+    Flask,
+    render_template,
+    request,
+    redirect,
+    jsonify,
+    session as flask_session,
+)
 
 from sqlalchemy import Column, Integer, String, Text, DateTime, func
 from sqlalchemy.ext.declarative import declarative_base
@@ -15,23 +22,35 @@ import os
 from dotenv import load_dotenv
 
 
+from waitress import serve
+
 # Carrega as variáveis de ambiente do arquivo .env
 load_dotenv()
 
 app = Flask(__name__)
 
-app.secret_key = os.environ.get('APP_KEY')
-user = os.environ.get('usuario')
-password = os.environ.get('senha')
-password_sql = os.environ.get('password_sql')
+app.secret_key = os.environ.get("APP_KEY")
+user = os.environ.get("usuario")
+password = os.environ.get("senha")
+user_sql = os.environ.get("POSTGRES_USER")
+password_sql = os.environ.get("POSTGRES_PASSWORD")
+host_sql = os.environ.get("POSTGRES_HOST")
 
 pessoa = {}
 
 # Banco de dados:
 
+
 def conectar_db():
-    con = psycopg2.connect(host='roundhouse.proxy.rlwy.net', database='railway', user=user, password=password_sql, port='48208')
+    con = psycopg2.connect(
+        host=host_sql,
+        database="neondb",
+        user=user_sql,
+        password=password_sql,
+        port="5432",
+    )
     return con
+
 
 Base = declarative_base()
 
@@ -43,7 +62,8 @@ def criar_tb(sql):
     con.commit()
     con.close()
 
-sql = '''CREATE TABLE IF NOT EXISTS MSG (
+
+sql = """CREATE TABLE IF NOT EXISTS MSG (
         ID SERIAL NOT NULL,
         NOME VARCHAR(255) NOT NULL,
         END_EMAIL VARCHAR(255) NOT NULL,
@@ -52,16 +72,17 @@ sql = '''CREATE TABLE IF NOT EXISTS MSG (
         DT DATE NOT NULL,
         CONSTRAINT ID_KEY PRIMARY KEY(ID));
         
-        '''
+        """
+
 
 class Msg(Base):
-    __tablename__ = 'MSG'
-    id = Column('ID', Integer, primary_key=True, autoincrement=True)
-    nome = Column('NOME',String(255), nullable=False)
-    end_email = Column('END_EMAIL', String(255), nullable=False)
-    assunto = Column('ASSUNTO', String(255), nullable=False)
-    mensagem = Column('MENSAGEM', Text)
-    dt = Column('DT', DateTime(timezone=True), server_default=func.now())
+    __tablename__ = "MSG"
+    id = Column("ID", Integer, primary_key=True, autoincrement=True)
+    nome = Column("NOME", String(255), nullable=False)
+    end_email = Column("END_EMAIL", String(255), nullable=False)
+    assunto = Column("ASSUNTO", String(255), nullable=False)
+    mensagem = Column("MENSAGEM", Text)
+    dt = Column("DT", DateTime(timezone=True), server_default=func.now())
 
     def __init__(self, nome, end_email, assunto, mensagem, dt):
         self.nome = nome
@@ -87,146 +108,164 @@ def inserir_db(sql):
         return 1
     cur.close()
 
+
 def consultar_db(sql):
-  con = conectar_db()
-  cur = con.cursor()
-  cur.execute(sql)
-  recset = cur.fetchall()
-  registros = []
-  for rec in recset:
-    registros.append(rec)
-  con.close()
-  return registros
+    con = conectar_db()
+    cur = con.cursor()
+    cur.execute(sql)
+    recset = cur.fetchall()
+    registros = []
+    for rec in recset:
+        registros.append(rec)
+    con.close()
+    return registros
 
 
 # Rotas da parte de login:
 
-@app.route('/login', methods=['GET', 'POST'])
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    msg_erro1 = ''
-    msg_erro2 = ''
-    if request.method == 'POST':
-        usuario = request.form.get('usuario')
-        senha = request.form.get('senha')
+    msg_erro1 = ""
+    msg_erro2 = ""
+    if request.method == "POST":
+        usuario = request.form.get("usuario")
+        senha = request.form.get("senha")
         if usuario == user and senha == password:
-            flask_session['usuario'] = usuario
-            return redirect('tabela')
+            flask_session["usuario"] = usuario
+            return redirect("tabela")
         else:
             msg_erro1 = "Usuário ou senha inválidos!"
-            msg_erro2= "Tente novamente."
-    return render_template('user/login.html', erro1=msg_erro1, erro2=msg_erro2)
+            msg_erro2 = "Tente novamente."
+    return render_template("user/login.html", erro1=msg_erro1, erro2=msg_erro2)
 
-@app.route('/tabela', methods=['GET'])
+
+@app.route("/tabela", methods=["GET"])
 def tabela():
-    sql = ''' select * from msg'''
+    sql = """ select * from msg"""
     pessoas = []
     p = {}
     result = consultar_db(sql)
     print(result)
     for i in result:
-            p = { "nome": i[1], "email": i[2], "assunto": i[3], "mensagem": i[4], "dt": i[5]}
-            pessoas.append(p)
-    if 'usuario' in flask_session and len(pessoas) != 0:
-        nome_user = ''
-        if flask_session['usuario'] == 'charlante':
-            nome_user = 'Charlante'
-        return render_template('user/tabela.html', nome=nome_user, dic=pessoas)
-    elif 'usuario' in flask_session and len(pessoas) == 0:
-        if flask_session['usuario'] == 'charlante':
-            nome_user = 'Charlante'
-        return render_template('user/tabela.html', nome=nome_user, dic='')
+        p = {"nome": i[1], "email": i[2], "assunto": i[3], "mensagem": i[4], "dt": i[5]}
+        pessoas.append(p)
+    if "usuario" in flask_session and len(pessoas) != 0:
+        nome_user = ""
+        if flask_session["usuario"] == "charlante":
+            nome_user = "Charlante"
+        return render_template("user/tabela.html", nome=nome_user, dic=pessoas)
+    elif "usuario" in flask_session and len(pessoas) == 0:
+        if flask_session["usuario"] == "charlante":
+            nome_user = "Charlante"
+        return render_template("user/tabela.html", nome=nome_user, dic="")
     else:
-        return redirect('login')
+        return redirect("login")
+
 
 # Deletando dados da tabela:
 
-@app.route("/tabela", methods=['POST'])
+
+@app.route("/tabela", methods=["POST"])
 def delete():
     session = sql_session()
-    if 'usuario' in flask_session:
+    if "usuario" in flask_session:
         sql = "Delete from msg"
         inserir_db(sql)
-        if flask_session['usuario'] == "charlante":
-            return redirect('tabela')
+        if flask_session["usuario"] == "charlante":
+            return redirect("tabela")
     else:
-        return redirect('login')
-        
+        return redirect("login")
 
-@app.route('/logout')
+
+@app.route("/logout")
 def sair():
     flask_session.clear()
-    return redirect('login')
+    return redirect("login")
 
 
 # Rotas do site:
 
-@app.route('/index.html')
-@app.route('/sobre')
-@app.route('/')
+
+@app.route("/index.html")
+@app.route("/sobre")
+@app.route("/")
 def index():
-    return render_template('site/index.html')
+    return render_template("site/index.html")
 
-@app.route('/experiencia.html')
-@app.route('/experiencia')
+
+@app.route("/experiencia.html")
+@app.route("/experiencia")
 def experiencia():
-    return render_template('site/experiencia.html')
+    return render_template("site/experiencia.html")
 
-@app.route('/educacao.html')
-@app.route('/educacao')
+
+@app.route("/educacao.html")
+@app.route("/educacao")
 def educacao():
-    return render_template('site/educacao.html')
+    return render_template("site/educacao.html")
 
-@app.route('/habilidades.html')
-@app.route('/habilidades')
+
+@app.route("/habilidades.html")
+@app.route("/habilidades")
 def habilidades():
-    return render_template('site/habilidades.html')
+    return render_template("site/habilidades.html")
 
-@app.route('/interesse.html')
-@app.route('/interesses')
+
+@app.route("/interesse.html")
+@app.route("/interesses")
 def interesse():
-    return render_template('site/interesse.html')
+    return render_template("site/interesse.html")
 
-@app.route('/contato.html')
-@app.route('/contato')
+
+@app.route("/contato.html")
+@app.route("/contato")
 def contato():
-    return render_template('site/contato.html')
+    return render_template("site/contato.html")
+
 
 # Enviou dos dados do formulário:
 
-@app.route('/contato', methods=['POST'])
+
+@app.route("/contato", methods=["POST"])
 def enviar():
-    if request.method == 'POST':
-        nome = request.form.get('nome')
-        email = request.form.get('end_email')
-        assunto = request.form.get('assunto')
-        mensagem = request.form.get('mensagem')
+    if request.method == "POST":
+        nome = request.form.get("nome")
+        email = request.form.get("end_email")
+        assunto = request.form.get("assunto")
+        mensagem = request.form.get("mensagem")
         dt = str(datetime.today())
 
-        if (nome == '') or (email == '') or (assunto == '') or (mensagem == ''):
+        if (nome == "") or (email == "") or (assunto == "") or (mensagem == ""):
             try:
                 return redirect("/erro", code=302)
             except Exception as ex:
-                return jsonify({"status":"ERRO", "msg":str(ex)})
+                return jsonify({"status": "ERRO", "msg": str(ex)})
         else:
-            sql = '''
+            sql = """
             INSERT into msg(nome, end_email, assunto, mensagem, dt)
             values('{}', '{}', '{}', '{}', '{}');
-            '''.format( nome, email, assunto, mensagem, dt)
+            """.format(
+                nome, email, assunto, mensagem, dt
+            )
             inserir_db(sql)
             return redirect("/sucesso", code=302)
 
 
-@app.route('/sucesso')
+@app.route("/sucesso")
 def get():
     return render_template("site/sucesso.html")
 
-@app.route('/erro')
+
+@app.route("/erro")
 def erro():
-     return render_template("site/erro.html")
+    return render_template("site/erro.html")
 
 
 # Rodando o aplicativo:
 
-if __name__ == '__main__':
-    app.run(host= 'localhost', port= 9000, debug=True)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 9090))
+    from app import app
 
+    serve(app, host="0.0.0.0", port=port)
