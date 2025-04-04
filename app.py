@@ -1,273 +1,175 @@
-# Arquivo adivindo de modificações para transformar uma aplicação sqlite em postgresql.
-
-from flask import (
-    Flask,
-    render_template,
-    request,
-    redirect,
-    jsonify,
-    session as flask_session,
-)
-
 from sqlalchemy import Column, Integer, String, Text, DateTime, func
-from sqlalchemy.orm import declarative_base, sessionmaker
-from sqlalchemy.orm import Session as sql_session
-
-import psycopg2
-
-from datetime import datetime
-
-
-import os
-from dotenv import load_dotenv
-
+from sqlalchemy.orm import declarative_base
 
 from waitress import serve
 
-from sqlalchemy import create_engine
+from flask import Flask, render_template, request, redirect, session as flask_session
+from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, func
+from sqlalchemy.orm import declarative_base, sessionmaker, scoped_session
+from datetime import datetime
+from dotenv import load_dotenv
+import os
 
-# Carrega as variáveis de ambiente do arquivo .env
+# Carrega variáveis de ambiente do .env
 load_dotenv()
 
+# Flask
 app = Flask(__name__)
-
 app.secret_key = os.environ.get("APP_KEY")
 user = os.environ.get("usuario")
 password = os.environ.get("senha")
-user_sql = os.environ.get("POSTGRES_USER")
-password_sql = os.environ.get("POSTGRES_PASSWORD")
-host_sql = os.environ.get("POSTGRES_HOST")
+user_sql = os.environ.get("PGUSER")
+password_sql = os.environ.get("PGPASSWORD")
+host_sql = os.environ.get("PGHOST")
+db_name = os.environ.get("PGDATABASE")
 
 
-DATABASE_URL = f"postgresql://{user_sql}:{password_sql}@{host_sql}:5432/neondb"
-engine = create_engine(DATABASE_URL)
+# Conexão via DATABASE_URL
+DATABASE_URL = f"postgresql://{user_sql}:{password_sql}@{host_sql}:5432/{db_name}"
+engine = create_engine(DATABASE_URL, echo=False)
 
-
-pessoa = {}
-
-# Banco de dados:
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-
-def conectar_db():
-    return SessionLocal()
-
-
+# SQLAlchemy Base e sessão
 Base = declarative_base()
+SessionLocal = scoped_session(sessionmaker(bind=engine))
 
 
-# def conectar_db():
-#     con = psycopg2.connect(
-#         host=host_sql,
-#         database="neondb",
-#         user=user_sql,
-#         password=password_sql,
-#         port="5432",
-#     )
-#     return con
-
-
-# def criar_tb(sql):
-#     con = conectar_db()
-#     cur = con.cursor()
-#     cur.execute(sql)
-#     con.commit()
-#     con.close()
-
-
-# sql = """CREATE TABLE IF NOT EXISTS MSG (
-#         ID SERIAL NOT NULL,
-#         NOME VARCHAR(255) NOT NULL,
-#         END_EMAIL VARCHAR(255) NOT NULL,
-#         ASSUNTO VARCHAR(255) NOT NULL,
-#         MENSAGEM VARCHAR(500) NOT NULL,
-#         DT DATE NOT NULL,
-#         CONSTRAINT ID_KEY PRIMARY KEY(ID));
-
-#         """
-
-
+# Modelo
 class Msg(Base):
     __tablename__ = "MSG"
     id = Column("ID", Integer, primary_key=True, autoincrement=True)
     nome = Column("NOME", String(255), nullable=False)
     end_email = Column("END_EMAIL", String(255), nullable=False)
     assunto = Column("ASSUNTO", String(255), nullable=False)
-    mensagem = Column("MENSAGEM", Text)
+    mensagem = Column("MENSAGEM", Text, nullable=False)
     dt = Column("DT", DateTime(timezone=True), server_default=func.now())
 
-    def __init__(self, nome, end_email, assunto, mensagem, dt):
-        self.nome = nome
-        self.end_email = end_email
-        self.assunto = assunto
-        self.mensagem = mensagem
-        self.dt = dt
+
+# Cria as tabelas se não existirem
+Base.metadata.create_all(bind=engine)
 
 
-# criar_tb(sql)
-
-Base.metadata.create_all(engine)
-
-
-def inserir_db(sql):
-    con = conectar_db()
-    cur = con.cursor()
-    try:
-        cur.execute(sql)
-        con.commit()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print("Error: %s" % error)
-        con.rollback()
-        cur.close()
-        return 1
-    cur.close()
-
-
-def consultar_db(sql):
-    con = conectar_db()
-    cur = con.cursor()
-    cur.execute(sql)
-    recset = cur.fetchall()
-    registros = []
-    for rec in recset:
-        registros.append(rec)
-    con.close()
-    return registros
-
-
-# Rotas da parte de login:
-
-
+# Rotas
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    msg_erro1 = ""
-    msg_erro2 = ""
     if request.method == "POST":
         usuario = request.form.get("usuario")
         senha = request.form.get("senha")
-        if usuario == user and senha == password:
+        if usuario == os.getenv("usuario") and senha == os.getenv("senha"):
             flask_session["usuario"] = usuario
-            return redirect("tabela")
+            return redirect("/tabela")
         else:
-            msg_erro1 = "Usuário ou senha inválidos!"
-            msg_erro2 = "Tente novamente."
-    return render_template("user/login.html", erro1=msg_erro1, erro2=msg_erro2)
+            return render_template(
+                "user/login.html",
+                erro1="Usuário ou senha inválidos!",
+                erro2="Tente novamente.",
+            )
+    return render_template("user/login.html")
 
 
 @app.route("/tabela", methods=["GET"])
 def tabela():
-    sql = """ select * from msg"""
-    pessoas = []
-    p = {}
-    result = consultar_db(sql)
-    print(result)
-    for i in result:
-        p = {"nome": i[1], "email": i[2], "assunto": i[3], "mensagem": i[4], "dt": i[5]}
-        pessoas.append(p)
-    if "usuario" in flask_session and len(pessoas) != 0:
-        nome_user = ""
-        if flask_session["usuario"] == "charlante":
-            nome_user = "Charlante"
-        return render_template("user/tabela.html", nome=nome_user, dic=pessoas)
-    elif "usuario" in flask_session and len(pessoas) == 0:
-        if flask_session["usuario"] == "charlante":
-            nome_user = "Charlante"
-        return render_template("user/tabela.html", nome=nome_user, dic="")
-    else:
-        return redirect("login")
-
-
-# Deletando dados da tabela:
+    if "usuario" not in flask_session:
+        return redirect("/login")
+    session = SessionLocal()
+    mensagens = session.query(Msg).all()
+    session.close()
+    dados = [
+        {
+            "nome": m.nome,
+            "email": m.end_email,
+            "assunto": m.assunto,
+            "mensagem": m.mensagem,
+            "dt": m.dt.strftime("%d/%m/%Y %H:%M"),
+        }
+        for m in mensagens
+    ]
+    nome_user = (
+        "Charlante"
+        if flask_session["usuario"] == "charlante"
+        else flask_session["usuario"]
+    )
+    return render_template(
+        "user/tabela.html", nome=nome_user, dic=dados if dados else ""
+    )
 
 
 @app.route("/tabela", methods=["POST"])
 def delete():
-    session = sql_session()
-    if "usuario" in flask_session:
-        sql = "Delete from msg"
-        inserir_db(sql)
-        if flask_session["usuario"] == "charlante":
-            return redirect("tabela")
-    else:
-        return redirect("login")
+    if "usuario" not in flask_session:
+        return redirect("/login")
+    session = SessionLocal()
+    session.query(Msg).delete()
+    session.commit()
+    session.close()
+    return redirect("/tabela")
 
 
 @app.route("/logout")
-def sair():
+def logout():
     flask_session.clear()
-    return redirect("login")
+    return redirect("/login")
 
 
-# Rotas do site:
-
-
+# Páginas do site
+@app.route("/")
 @app.route("/index.html")
 @app.route("/sobre")
-@app.route("/")
 def index():
     return render_template("site/index.html")
 
 
-@app.route("/experiencia.html")
 @app.route("/experiencia")
 def experiencia():
     return render_template("site/experiencia.html")
 
 
-@app.route("/educacao.html")
 @app.route("/educacao")
 def educacao():
     return render_template("site/educacao.html")
 
 
-@app.route("/habilidades.html")
 @app.route("/habilidades")
 def habilidades():
     return render_template("site/habilidades.html")
 
 
-@app.route("/interesse.html")
 @app.route("/interesses")
-def interesse():
+def interesses():
     return render_template("site/interesse.html")
 
 
-@app.route("/contato.html")
 @app.route("/contato")
 def contato():
     return render_template("site/contato.html")
 
 
-# Enviou dos dados do formulário:
-
-
 @app.route("/contato", methods=["POST"])
 def enviar():
-    if request.method == "POST":
-        nome = request.form.get("nome")
-        email = request.form.get("end_email")
-        assunto = request.form.get("assunto")
-        mensagem = request.form.get("mensagem")
-        dt = str(datetime.today())
+    nome = request.form.get("nome")
+    email = request.form.get("end_email")
+    assunto = request.form.get("assunto")
+    mensagem = request.form.get("mensagem")
 
-        if (nome == "") or (email == "") or (assunto == "") or (mensagem == ""):
-            try:
-                return redirect("/erro", code=302)
-            except Exception as ex:
-                return jsonify({"status": "ERRO", "msg": str(ex)})
-        else:
-            sql = """
-            INSERT into msg(nome, end_email, assunto, mensagem, dt)
-            values('{}', '{}', '{}', '{}', '{}');
-            """.format(
-                nome, email, assunto, mensagem, dt
-            )
-            inserir_db(sql)
-            return redirect("/sucesso", code=302)
+    if not all([nome, email, assunto, mensagem]):
+        return redirect("/erro")
+
+    nova_msg = Msg(
+        nome=nome,
+        end_email=email,
+        assunto=assunto,
+        mensagem=mensagem,
+        dt=datetime.now(),
+    )
+    session = SessionLocal()
+    session.add(nova_msg)
+    session.commit()
+    session.close()
+
+    return redirect("/sucesso")
 
 
 @app.route("/sucesso")
-def get():
+def sucesso():
     return render_template("site/sucesso.html")
 
 
@@ -276,8 +178,7 @@ def erro():
     return render_template("site/erro.html")
 
 
-# Rodando o aplicativo:
-
+# Execução
 if __name__ == "__main__":
-    # serve(app, host="0.0.0.0")
-    app.run(host="localhost", port=9000, debug=True)
+    serve(app, host="0.0.0.0")
+    # app.run(host="localhost", port=9000, debug=True)
