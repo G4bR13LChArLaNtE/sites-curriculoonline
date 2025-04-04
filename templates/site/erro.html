@@ -1,29 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-  <title>Mensagem enviada!</title>
-  <link rel="icon" href="/static/check-circle.gif">
-  <link rel="stylesheet" href="/static/css/sucesso.css">
+  <meta charset="utf-8">
+  <title>Mensagem não enviada</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="{{ url_for('static', filename='check-circle.gif') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sucesso.css') }}">
 </head>
 
 <body>
-  
   <div id="w">
     <div id="content">
-      
-      <div class="notify successbox" action="/sucesso" method="GET">
-        <h1>Desculpa, mas houve um erro!</h1>
-        <span class="alerticon"><a href="index.html"><img src="/static/atenção.gif" alt="checkmark do icon8" style="height: 192px; width= 192px"></a></span></span>
-        <p>Tente enviar a mensagem outra vez. Dessa vez lembre de responder todos os campos, por favor! :) </p><br>
+      <div class="notify successbox">
+        <h1>Desculpe, mas houve um erro!</h1>
+        
+        <a href="{{ url_for('index') }}">
+          <img 
+            src="{{ url_for('static', filename='atenção.gif') }}" 
+            alt="Ícone de atenção" 
+            style="height: 192px; width: 192px;"
+          >
+        </a>
 
-        <p> Clique na imagem e você será direcionado para a página principal!</p>
+        <p>Tente enviar a mensagem novamente. Lembre-se de preencher todos os campos, por favor! :)</p>
+        <p>Clique na imagem acima para retornar à página principal.</p>
       </div>
-
-
-
-    </div><!-- @end #content -->
-  </div><!-- @end #w -->
-
+    </div>
+  </div>
 </body>
 </html>

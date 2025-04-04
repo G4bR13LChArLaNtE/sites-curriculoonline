@@ -1,102 +1,71 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
-    <head>
-        <meta charset="utf-8">
-        <title>Currículo Charlante</title>
-        <meta name="description" content="Meu currículo pessoal.">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../static/css/hab.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Sarala&display=swap" rel="stylesheet">
-        <link rel="shortcut icon" href="./CSS/curriculum-vitae.png"> 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
-    </head>
+<head>
+  <meta charset="utf-8">
+  <title>Currículo Charlante</title>
+  <meta name="description" content="Meu currículo pessoal.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/hab.css') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='CSS/curriculum-vitae.png') }}">
 
+  <!-- Fonts e Ícones -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarala&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+</head>
 
-
-    <body>
-
+<body>
   <div class="parent">
-
-  <div class="sidebar">
-
-    <div class="sidebar-pos"></div>
+    <div class="sidebar">
+      <div class="sidebar-pos"></div>
 
       <div class="img-sidebar">
-            <img src="../static/gabriel-foto.jpeg" class="picture" alt="Foto Gabriel Charlante">
+        <img src="{{ url_for('static', filename='gabriel-foto.jpeg') }}" class="picture" alt="Foto Gabriel Charlante">
       </div>
 
       <div class="menu">
-              <a href="index.html">Sobre</a>
-              <a href="educacao.html">Educação</a>
-              <a href="experiencia.html">Experiência</a>
-              <a class="selected" href="habilidades.html">Habilidades</a>
-              <a href="interesse.html">Interesses</a>
-              <a href="contato.html">Contato</a>
-              
+        <a href="{{ url_for('index') }}">Sobre</a>
+        <a href="{{ url_for('educacao') }}">Educação</a>
+        <a href="{{ url_for('experiencia') }}">Experiência</a>
+        <a class="selected" href="{{ url_for('habilidades') }}">Habilidades</a>
+        <a href="{{ url_for('interesses') }}">Interesses</a>
+        <a href="{{ url_for('contato') }}">Contato</a>
+      </div>
+    </div>
 
-      </div><!--menu-->
-    </div><!--sidebar-pos-->
+    <main class="content">
+      <section class="descricao">
 
-  </div><!--sidebar-->
+        <h3><span>Linguagens de Programação</span></h3><br>
 
-       <main class="content">
+        <p><span>C:</span> Conhecimento intermediário, utilizado na prototipagem eletrônica com microcontroladores PIC.</p>
+        <p><span>C#:</span> Conhecimento básico, utilizado para criação de interfaces de comunicação em projetos eletrônicos.</p>
+        <p><span>Kotlin:</span> Conhecimento básico, aplicado na criação de aplicativos Android.</p>
+        <p><span>Python:</span> Conhecimento intermediário, com foco em desenvolvimento Web (Flask, Django), APIs REST (FastAPI), banco de dados (SQLAlchemy), automação de processos (Automation Anywhere 360, Celery, Redis), testes automatizados (pytest, unittest, Selenium, Behave), análise de dados (NumPy, Pandas), interfaces (Tkinter, Flet) e criptografia (Bcrypt).</p>
+        <p><span>Java:</span> Conhecimento intermediário, voltado para aplicações Web com Spring Boot.</p>
+        <p><span>JavaScript:</span> Conhecimento intermediário, utilizado no desenvolvimento de aplicações Web com React (JS e TS).</p><br>
 
-        <section class="descricao">
-          
-          <h3> <span> Linguagens de Programação </span> </h3><br /><br />
-          
+        <h3><span>Outras Linguagens</span></h3><br>
 
-          <p><span>C : </span> Conhecimento intermediário, utilização voltada a prototipagem eletrônica com microcontroladores PIC. </p><br>
+        <p><span>HTML:</span> Conhecimento intermediário, utilizado em conjunto com frameworks como Bootstrap.</p>
+        <p><span>CSS:</span> Conhecimento intermediário, com foco em responsividade (media queries).</p>
+        <p><span>SQL:</span> Conhecimento intermediário, voltado para criação e manipulação de bancos de dados relacionais.</p><br>
 
-          <p><span>C# : </span> Conhecimento básico, utilização voltada a criação de interfaces de comunicação para projetos eletrônicos. </p><br>
+        <h3><span>Ferramentas</span></h3><br>
 
-          <p><span>Kotlin: </span> Conhecimento básico, utilização voltada a criação de programas Android. </p><br>
+        <p><span>MySQL, PostgreSQL, SQLite, SQL Server 2019, MongoDB:</span> Conhecimento intermediário em modelagem e gerenciamento de bancos de dados.</p>
+        <p><span>Photoshop 2021:</span> Conhecimento básico em edição e modificação de imagens.</p>
+        <p><span>AWS (EC2, CloudFront, S3):</span> Conhecimento básico para configuração de ambientes em nuvem para desenvolvimento.</p>
+        <p><span>Git e GitHub:</span> Conhecimento básico para versionamento de código e gerenciamento de repositórios.</p>
+        <p><span>Docker e Docker Compose:</span> Conhecimento básico em criação de ambientes com containers para desenvolvimento e testes.</p>
+        <p><span>Heroku:</span> Conhecimento básico em deploy de aplicações Web.</p>
 
-          <p><span>Python : </span> Conhecimento Intermediário, utilização voltada a criação de interfaces Web (Flask e Django), criação de API's (API Rest e Fast API), comunicação entre banco de dados e interfaces Web (SQLAlchemy), automatização robótica de processos (com Automation Anywhere 360), criação de testes automatizados (com pytest,unittest, selenium e behave), Análise de dados (Numpy e Pandas), criação de interfaces (TKinter e Flet), automação de processos (Celery e Redis) e criptografia de dados (Bcrypt). </p><br>
+      </section>
+    </main>
+  </div>
 
-          <p><span>Java: </span> Conhecimento Intermediário, utilização voltada a Aplicações Web (SpringBoot). </p><br>
-
-          <p><span>Javascript : </span> Conhecimento intermediário, utilização voltada ao desenvolvimento de softwares Web (ReactJs/ReactTsx). </p><br><br><br><br />
-
-          <h3> <span> Outras Linguagens </span> </h3><br />
-
-          <p><span>HTML : </span> Conhecimento intermediário, utilização voltada ao desenvolvimento de softwares Web (com Bootstrap). </p>
-
-          <p><span>CSS : </span> Conhecimento intermediário, utilização voltada ao desenvolvimento de softwares Web (media querys). </p><br>
-
-          <p><span>SQL : </span> Conhecimento intermediário, utilização voltada a criação de tabelas e bancos de dados. </p><br><br><br><br />
-
-          <h3> <span> Ferramentas </span> </h3><br />
-
-          <p><span>MySQL, PostgreSQL, SQLite, SQL Server 2019 e MongoDB: </span> Conhecimento intermediário, utilização voltada a criação de tabelas e bancos de dados. </p><br>
-
-          <p><span>Photoshop 2021: </span> Conhecimento básico, utilização voltada a modificação de imagens. </p><br>
-
-          <p><span>AWS EC2, CloudFront e S3: </span> Conhecimento básico, utilização voltada a configuração de ambientes (Máquina virtual) para desenvolvimento de software. </p><br>
-
-          <p><span>Git: </span> Conhecimento básico, utilização voltada a versionamento de software. </p><br>
-
-          <p><span>GitHub: </span> Conhecimento básico, utilização voltada a versionamento de software e criação de repositórios online. </p><br>
-
-          <p><span>Docker e Docker-Compose: </span> Conhecimento básico, utilização voltada a configuração de ambientes (Container) para desenvolvimento de software.
-          </p><br>
-
-          <p><span>Heroku: </span> Conhecimento básico, utilização voltada a deploy de aplicações Web.
-          </p><br>
-
-
-
-        </section><!--descricao-->
-
-       </main><!--content-->
-
-       </div><!--parent-->
-       <footer>
-           
-       </footer>
-    </body>
-
+  <footer></footer>
+</body>
 </html>

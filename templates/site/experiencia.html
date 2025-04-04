@@ -1,148 +1,85 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
-    <head>
-        <meta charset="utf-8">
-        <title>Currículo Charlante</title>
-        <meta name="description" content="Meu currículo pessoal.">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../static/css/exp.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Sarala&display=swap" rel="stylesheet">
-        <link rel="shortcut icon" href="./CSS/curriculum-vitae.png"> 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
-    </head>
+<head>
+  <meta charset="utf-8">
+  <title>Currículo Charlante</title>
+  <meta name="description" content="Meu currículo pessoal.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/exp.css') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='CSS/curriculum-vitae.png') }}">
+  
+  <!-- Fonts e Ícones -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarala&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+</head>
 
-
-
-    <body>
-
+<body>
   <div class="parent">
-
-  <div class="sidebar">
-
-    <div class="sidebar-pos"></div>
+    <div class="sidebar">
+      <div class="sidebar-pos"></div>
 
       <div class="img-sidebar">
-            <img src="../static/gabriel-foto.jpeg" class="picture" alt="Foto Gabriel Charlante">
+        <img src="{{ url_for('static', filename='gabriel-foto.jpeg') }}" class="picture" alt="Foto Gabriel Charlante">
       </div>
 
       <div class="menu">
-              <a href="index.html">Sobre</a>
-              <a href="educacao.html">Educação</a>
-              <a class="selected" href="experiencia.html">Experiência</a>
-              <a href="habilidades.html">Habilidades</a>
-              <a href="interesse.html">Interesses</a>
-              <a href="contato.html">Contato</a>
-              
+        <a href="{{ url_for('index') }}">Sobre</a>
+        <a href="{{ url_for('educacao') }}">Educação</a>
+        <a class="selected" href="{{ url_for('experiencia') }}">Experiência</a>
+        <a href="{{ url_for('habilidades') }}">Habilidades</a>
+        <a href="{{ url_for('interesses') }}">Interesses</a>
+        <a href="{{ url_for('contato') }}">Contato</a>
+      </div>
+    </div>
 
-      </div><!--menu-->
-    </div><!--sidebar-pos-->
+    <main class="content">
+      <section class="descricao">
 
-  </div><!--sidebar-->
+        <h3><a href="https://www.ets.com.br/"><span>ETS - Eletronic Test Systems</span></a></h3>
+        <h4>Período: <span>Janeiro de 2013 - Outubro de 2014</span></h4>
+        <h4>Cargo: <span>Programador Técnico Treinee</span></h4><br>
+        <p>Desenvolvimento de dispositivos de teste de circuitos eletrônicos (Gigas de teste); manutenção corretiva, preventiva e preditiva.</p>
+        <p>Participação em projetos com análise de esquemas elétricos, datasheets e CADs, medições e testes com foco em qualidade e segurança.</p>
+        <p>Debug de scripts em linguagem C para microcontroladores.</p>
+        <p>Atuação em requisitos e avaliações de qualidade conforme normas ISO/IEC 25000, 25022, 25023, 25024, 25030 e 25040.</p><br>
 
-       <main class="content">
+        <h3><a href="https://www.ituran.com.br/"><span>Ituran Road Track Monitoramento de Veículos</span></a></h3>
+        <h4>Período: <span>Julho de 2016 - Janeiro de 2017</span></h4>
+        <h4>Cargo: <span>Técnico de Inspeção e Testes</span></h4><br>
+        <p>Melhorias de sistemas em testes e homologação.</p>
+        <p>Desenvolvimento de Gigas de teste, manutenção de hardware eletrônico.</p>
+        <p>Interpretação de esquemas elétricos e testes de qualidade.</p>
+        <p>Desenvolvimento embarcado em C para PICs e correção de bugs em scripts.</p><br>
 
-        <section class="descricao">
-          
+        <h3><a href="https://registradores.onr.org.br"><span>ONR - Órgão Nacional de Registradores</span></a></h3>
+        <h4>Período: <span>Fevereiro de 2022 - Dezembro de 2023</span></h4>
+        <h4>Cargo: <span>Analista de Sistemas</span></h4><br>
+        <p>Suporte técnico a cartórios de registro de imóveis.</p>
+        <p>Gerenciamento e verificação de backups em servidores.</p>
+        <p>Elaboração de relatórios técnicos e documentações de backup.</p>
+        <p>Instalação e configuração de softwares, criação de perfis de usuários e formatação de máquinas.</p>
+        <p>Correção de bugs em aplicações Java e Python.</p>
+        <p>Implantação de sistemas ERP, CRM e corporativos.</p>
+        <p>Suporte técnico geral e colaboração com equipes multidisciplinares.</p><br>
 
+        <h3><a href="https://www.bora.com.br"><span>Bora Transportes LTDA</span></a></h3>
+        <h4>Período: <span>Agosto de 2024 - Atual</span></h4>
+        <h4>Cargo: <span>Desenvolvedor Fullstack</span></h4><br>
+        <p>Automação de processos com Python (PyAutoGUI, Django, Celery, Pandas, Numpy, etc).</p>
+        <p>Desenvolvimento de aplicações web com Django e React TypeScript.</p>
+        <p>Integração de APIs RESTful com interfaces interativas e responsivas.</p>
+        <p>Correção de bugs em sistemas legados e novos.</p>
+        <p>Suporte técnico à equipe e usuários finais.</p>
+        <p>Colaboração com equipes multidisciplinares para sistemas escaláveis e eficientes.</p><br>
 
-          <h3> <a href="https://www.ets.com.br/"> <span> ETS - Eletronic Test Systems </span> </a></h3>
-          <h4> Período: <span> Janeiro de 2013 - Outubro de 2014</span></h4>
-          <h4> Cargo: <span> Programador Técnico Treine.</span></h4><br />
+        <p id="alerta">Nota: Ao clicar nos nomes das empresas, você será levado aos sites delas.</p>
 
-          <p>Responsável pelo desenvolvimento de dispositivo de teste de circuitos eletrônicos (Gigas de teste), manutenções corretivas,
-            preventivas e preditivas deles;</p><br>
+      </section>
+    </main>
+  </div>
 
-          <p>Participação no desenvolvimento de projetos e interpretação e análise de esquemas elétricos, datasheets e CAD’s elétricos,
-            realizando medições e teste quando necessário, com foco em procedimentos de controle de qualidade, respeitando normas
-            técnicas de segurança;</p><br />
-
-          <p>Responsável pelo Debug de scripts em linguagem C (para microcontroladores);</p><br /><br />
-
-          <p>Responsável pelo Debug de scripts em linguagem C (para microcontroladores);</p><br />
-
-
-          <p>Participação no desenvolvimento de especificação de requisitos, medições de qualidade e avaliações de qualidade (ISO/IEC
-            25000, ISO/IEC 25022, ISO/IEC 25023, ISO/IEC 25024, ISO/IEC 25030, ISO/IEC 25040).</p><br /><br />
-
-
-
-          <h3> <a href="https://www.ituran.com.br/"> <span> Ituran Road Track Monitoramento de Veículos </span> </a></h3>
-          <h4> Período: <span> Julho de 2016 - Janeiro de 2017</span></h4>
-          <h4> Cargo: <span> Técnico de Inspeção e Testes</span></h4><br />
-
-          <p>Responsável por melhorias de sistemas nas fases de teste e homologação de projetos;</p><br>
-
-          <p>Responsável pelo desenvolvimento de dispositivo de teste de circuitos eletrônicos (Gigas de teste), manutenções corretivas,
-            preventivas e preditivas deles;</p><br>
-
-          <p>Responsável pelo desenvolvimento de projetos e interpretação e análise de esquemas elétricos, datasheets e CAD’s elétricos,
-            realizando medições e teste quando necessário, com foco em procedimentos de controle de qualidade, respeitando normas
-            técnicas de segurança;</p><br>
-            
-          <p>Participação no desenvolvimento de software de eletrônica embarcada para Gigas de teste e módulos GSM (Linguagem C
-            voltada para PIC’s) e participação na correção de Bug em scripts em linguagem C.</p><br>
-
-
-          <h3> <a href="https://registradores.onr.org.br"> <span> ONR - Orgão Nacional de Registradores. </span> </a></h3>
-          <h4> Período: <span>Fevereiro de 2022 - Dezembro de 2023 </span></h4>
-          <h4> Cargo: <span> Analista de Sistemas</span></h4><br />
-
-          <p>Contato para suporte técnico com cartórios de registro de imóveis do Brasil;
-            Acesso aos servidores para verificação de backups;</p><br>
-
-          <p>Realização de backups dos servidores dos cartórios para o servidor do ONR;</p><br>
-
-          <p>Elaboração de relatórios para evidenciar o ambiente atual e os backups realizados para o ONR;</p><br>
-
-          <p>Instalação e configuração de softwares, criação de perfil de usuário para os colaboradores, formatação de computadores e
-            instalação de sistemas operacionais;</p><br>
-
-          <p>Responsável pela correção de bugs em aplicações em Java e Python;</p><br>
-
-          <p>Implantação de sistemas ERP, CRM e outros sistemas corporativos;</p><br>
-
-          <p>Suporte técnico aos usuários e aos funcionários da empresa;</p><br>
-
-          <p>Suporte técnico aos usuários e aos funcionários da empresa;</p><br>
-
-          <p>Colaboração com equipes multidisciplinares para entrega de soluções de alta qualidade dentro de prazos estabelecidos.</p><br /><br />
-
-
-          <h3> <a href="https://www.bora.com.br"> <span> Bora Transportes LTDA.</span> </a></h3>
-          <h4> Período: <span>Agosto de 2024 - Atual </span></h4>
-          <h4> Cargo: <span>Desenvolvedor Fullstack.</span></h4><br />
-
-          <p>Desenvolvimento de soluções para automação de processos utilizando Python (pyautogi, Django, celery,
-            pandas, numpy e etc.);</p><br />
-
-          <p>Criação de aplicações web com Django e React Typescript, incluindo a integração com Celery para tarefas
-            assíncronas;</p><br />
-
-          <p>Implementação de APIs RESTful e interfaces interativas, otimizando a experiência do usuário e o desempenho
-            do sistema;</p><br />
-
-          <p>Participação na análise e correção de bugs em sistemas legados e novos projetos;</p><br />
-
-          <p>Suporte técnico para equipe de desenvolvimento e usuários finais, garantindo a continuidade e eficiência das
-            operações;</p><br />
-
-          <p>Colaboração com equipes multidisciplinares para entrega de sistemas escaláveis e robustos dentro de prazos
-            definidos.</p><br /><br />
-
-
-          <p id="alerta"> Nota: Ao clicar nos nomes das empresas, você será levado aos sites delas.</p><br />
-
-        </section><!--descricao--> 
-
-       </main><!--content-->
-
-       </div><!--parent-->
-       <footer>
-           
-       </footer>
-    </body>
-
+  <footer></footer>
+</body>
 </html>

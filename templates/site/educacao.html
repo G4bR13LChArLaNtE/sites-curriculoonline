@@ -1,103 +1,90 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
-    <head>
-        <meta charset="utf-8">
-        <title>Currículo Charlante</title>
-        <meta name="description" content="Meu currículo pessoal.">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../static/css/edu.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Sarala&display=swap" rel="stylesheet">
-        <link rel="shortcut icon" href="./CSS/curriculum-vitae.png"> 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
-    </head>
+<head>
+    <meta charset="utf-8">
+    <title>Currículo Charlante</title>
+    <meta name="description" content="Meu currículo pessoal.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- CSS Local -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edu.css') }}">
 
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='CSS/curriculum-vitae.png') }}">
 
-    <body>
+    <!-- Fonts e Ícones -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarala&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+</head>
 
-  <div class="parent">
+<body>
+    <div class="parent">
+        <div class="sidebar">
+            <div class="sidebar-pos"></div>
 
-  <div class="sidebar">
+            <div class="img-sidebar">
+                <img src="{{ url_for('static', filename='gabriel-foto.jpeg') }}" class="picture" alt="Foto Gabriel Charlante">
+            </div>
 
-    <div class="sidebar-pos"></div>
+            <div class="menu">
+                <a href="{{ url_for('index') }}">Sobre</a>
+                <a class="selected" href="{{ url_for('educacao') }}">Educação</a>
+                <a href="{{ url_for('experiencia') }}">Experiência</a>
+                <a href="{{ url_for('habilidades') }}">Habilidades</a>
+                <a href="{{ url_for('interesses') }}">Interesses</a>
+                <a href="{{ url_for('contato') }}">Contato</a>
+            </div>
+        </div>
 
-      <div class="img-sidebar">
-            <img src="../static/gabriel-foto.jpeg" class="picture" alt="Foto Gabriel Charlante">
-      </div>
+        <main class="content">
+            <section class="descricao">
+                <h3><span>Formação Acadêmica</span></h3><br><br>
 
-      <div class="menu">
-              <a href="index.html">Sobre</a>
-            <a class="selected" href="educacao.html">Educação</a>
-              <a href="experiencia.html">Experiência</a>
-              <a href="habilidades.html">Habilidades</a>
-              <a href="interesse.html">Interesses</a>
-              <a href="contato.html">Contato</a>
-              
+                <h4>Instituição: <span><a href="http://www.impacta.edu.br/">Faculdade Impacta de Tecnologia</a></span></h4><br>
+                <h4>Curso superior: <span>Sistemas de Informação</span></h4><br>
+                <h4>Período: <span>6° Semestre - Cursando</span></h4><br><br>
 
-      </div><!--menu-->
-    </div><!--sidebar-pos-->
+                <h4>Instituição: <span><a href="http://www.fatecsp.br/">Faculdade de Tecnologia de São Paulo</a></span></h4><br>
+                <h4>Curso superior: <span>Eletrônica Industrial</span></h4><br>
+                <h4>Período: <span>Completo</span></h4><br><br>
 
-  </div><!--sidebar-->
+                <h4>Instituição: <span><a href="http://www.etesaopaulo.com.br/">Escola Técnica Estadual de São Paulo</a></span></h4><br>
+                <h4>Curso Técnico: <span>Técnico em Eletrônica</span></h4><br>
+                <h4>Período: <span>Completo</span></h4><br><br><br><br>
 
-       <main class="content">
+                <h3><span>Cursos Profissionalizantes</span></h3><br><br>
 
-        <section class="descricao">
-          
+                <h4>Instituição: <span><a href="http://manutencao.sp.senai.br">SENAI</a></span></h4><br>
+                <h4>Curso: <span>NR35 e NR10</span></h4><br>
+                <h4>Período: <span>Completo</span></h4><br><br>
 
-          <h3> <span> Formação Acadêmica </span></h3><br /><br />
-          <h4> Instituição: <span> <a href="http://www.impacta.edu.br/">Faculdade Impacta de Tecnologia. </a> </span></h4><br />
-          <h4> Curso superior: <span> Sistemas de Informação.</span></h4><br />
-          <h4> Periodo: <span> 6°Semestre - Cursando.</span></h4><br /><br />
+                <h4>Instituição: <span><a href="http://institutoportoseguro.com.br">Porto Seguro</a></span></h4><br>
+                <h4>Curso: <span>Atendimento ao Cliente</span></h4><br>
+                <h4>Período: <span>Completo</span></h4><br><br>
 
+                <h4>Instituição: <span><a href="http://automobilistica.sp.senai.br">SENAI</a></span></h4><br>
+                <h4>Curso: <span>Mecânica e Eletrônica de Automóveis</span></h4><br>
+                <h4>Período: <span>Completo</span></h4><br><br>
 
-          <h4> Instituição: <span> <a href="http://www.fatecsp.br/">Faculdade de Tecnologia de São Paulo. </a></span></h4><br />
-          <h4> Curso superior: <span> Eletrônica Industrial.</span></h4><br />
-          <h4> Periodo: <span> Completo.</span></h4><br /><br />
+                <h4>Instituição: <span><a href="http://www.microlins.com.br">Microlins</a></span></h4><br>
+                <h4>Curso: <span>Hardware e Redes</span></h4><br>
+                <h4>Período: <span>Completo</span></h4><br><br>
 
-          <h4> Instituição: <span> <a href="http://www.etesaopaulo.com.br/"> Escola Técnica Estadual de São Paulo. </a> </span></h4><br />
-          <h4> Curso Técnico: <span> Técnico em Eletrônica.</span></h4><br />
-          <h4> Periodo: <span> Completo.</span></h4><br /><br /><br /><br />
+                <h4>Instituição: <span><a href="https://salesianossp.org.br/osbomretiro/">SENAI</a></span></h4><br>
+                <h4>Curso: <span>Comandos elétricos e eletrônica analógica/digital</span></h4><br>
+                <h4>Período: <span>Completo</span></h4><br><br>
 
+                <h4>Instituição: <span><a href="https://salesianossp.org.br/osbomretiro/">SENAI</a></span></h4><br>
+                <h4>Curso: <span>Instalações Elétricas Residenciais</span></h4><br>
+                <h4>Período: <span>Completo</span></h4><br><br>
 
-          <h3> <span> Cursos Profissionalizantes </span></h3><br /><br />
-          <h4> Instituição: <span> <a href="http://manutencao.sp.senai.br"> SENAI. </a></span></h4><br />
-          <h4> Curso: <span> NR35 e NR10.</span></h4><br />
-          <h4> Periodo: <span> Completo.</span></h4><br /><br />
+                <p id="alerta">Nota: Ao clicar nos nomes das escolas/faculdades, você será levado aos sites delas.</p>
+            </section>
+        </main>
+    </div>
 
-
-          <h4> Instituição: <span><a href="http://institutoportoseguro.com.br">Porto Seguro. </a></span></h4><br />
-          <h4> Curso: <span> Atendimento ao cliente.</span></h4><br />
-          <h4> Periodo: <span> Completo</span></h4><br /><br />
-
-          <h4> Instituição: <span><a href="http://automobilistica.sp.senai.br"> SENAI. </a></span></h4><br />
-          <h4> Curso: <span> Mecânica e Eletrônica de Automóveis.</span></h4><br />
-          <h4> Periodo: <span> Completo.</span></h4><br /><br />
-
-          <h4> Instituição: <span><a href="http://www.microlins.com.br">Microlins. </a></span></h4><br />
-          <h4> Curso: <span> Hardware e Redes.</span></h4><br />
-          <h4> Periodo: <span> Completo.</span></h4><br /><br />
-
-          <h4> Instituição: <span> <a href="https://salesianossp.org.br/osbomretiro/">SENAI.</a> </span></h4><br />
-          <h4> Curso: <span>  Comandos elétricos e eletrônica analógica/digital.</span></h4><br />
-          <h4> Periodo: <span> Completo.</span></h4><br /><br />
-
-          <h4> Instituição: <span> <a href="https://salesianossp.org.br/osbomretiro/">SENAI.</a></span></h4><br />
-          <h4> Curso: <span> Instalações Elétricas Residenciais</span></h4><br />
-          <h4> Periodo: <span> Completo.</span></h4><br /><br />
-
-
-          <p id="alerta"> Nota: Ao clicar nos nomes das escolas/faculdades, você será levado aos sites delas.</p>
-        </section><!--descricao-->
-
-       </main><!--content-->
-
-       </div><!--parent-->
-       <footer>
-           
-       </footer>
-    </body>
-
+    <footer></footer>
+</body>
 </html>

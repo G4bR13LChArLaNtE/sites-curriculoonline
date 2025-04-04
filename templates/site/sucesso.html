@@ -1,29 +1,28 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta charset="utf-8">
   <title>Mensagem enviada!</title>
-  <link rel="icon" href="/static/check-circle.gif">
-  <link rel="stylesheet" href="/static/css/sucesso.css">
+  <link rel="icon" href="{{ url_for('static', filename='check-circle.gif') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sucesso.css') }}">
 </head>
 
 <body>
-  
   <div id="w">
     <div id="content">
-      
-      <div class="notify successbox" action="/sucesso" method="GET">
+      <div class="notify successbox">
         <h1>Mensagem enviada com sucesso!</h1>
-        <span class="alerticon"><a href="index.html"><img src="/static/check-circle.gif" alt="checkmark do icon8"/></a></span>
-        <p>Muito obrigado por sua mensagem. Assim que possível estarei te respondendo! :) </p><br>
+        
+        <span class="alerticon">
+          <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='check-circle.gif') }}" alt="Ícone de confirmação"/>
+          </a>
+        </span>
 
-        <p> Clique na imagem e você será direcionado para a página principal!</p>
+        <p>Muito obrigado pela sua mensagem. Assim que possível, entrarei em contato! :)</p>
+        <p>Clique na imagem para retornar à página principal.</p>
       </div>
-
-
-
-    </div><!-- @end #content -->
-  </div><!-- @end #w -->
-
+    </div>
+  </div>
 </body>
 </html>
